@@ -1,5 +1,8 @@
 name: my_first_workflow
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'release'
 jobs:
   first_job:
     runs-on: ubuntu-latest
@@ -19,6 +22,11 @@ jobs:
           pip install -r requirements.txt
       - name: check project location
         run: echo $GITHUB_WORKSPACE
+  second_job:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: github.branch == 'main'
+    steps:
       - name: stuff
         run: flake8 . --count
       - name: check coverage
